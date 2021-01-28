@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Stylin.Data;
 
 namespace Stylin.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210128044559_Initial3")]
+    partial class Initial3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace Stylin.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8005c0b2-19de-4355-81a1-285133efd676",
-                            ConcurrencyStamp = "de7470b5-86d1-4033-8c4c-c556123b7874",
+                            Id = "7e5bb021-7d2a-4cd7-8661-5895a9cba897",
+                            ConcurrencyStamp = "d3cb0726-4f86-4b06-8d47-1c8a542ebd2e",
                             Name = "Subscriber",
                             NormalizedName = "SUBSCRIBER"
                         },
                         new
                         {
-                            Id = "d7d357fe-9734-43bb-b1de-3333bf76865e",
-                            ConcurrencyStamp = "b0599561-577a-43ed-8576-2ef472f3f0d4",
+                            Id = "c665eab3-0337-4e0d-82a9-fa71d9ffc5a9",
+                            ConcurrencyStamp = "e24cf82e-1400-4a68-8e17-3add2acbfc5d",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
