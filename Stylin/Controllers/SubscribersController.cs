@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +9,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Stylin.Data;
 using Stylin.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Stylin.Controllers
 {
@@ -24,6 +28,12 @@ namespace Stylin.Controllers
         // GET: Subscribers
         public async Task<IActionResult> Index()
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var shopper = _context.Subscriber.Where(c => c.IdentityUserId == userId).FirstOrDefault(); // Use First not Single
+            if (shopper == null)
+            {
+                return RedirectToAction("Create");
+            }
             var applicationDbContext = _context.Subscriber.Include(s => s.IdentityUser);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -57,9 +67,10 @@ namespace Stylin.Controllers
         // POST: Subscribers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //Manipulate file to be able to save on server
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,IdentityUserId")] Subscriber subscriber)
+        public async Task<IActionResult> Create(IFormFile file,/*[Bind("Id,FirstName,LastName,Address,ZipCode,City,State,PictureFile,IdentityUserId")]*/ Subscriber subscriber)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +81,8 @@ namespace Stylin.Controllers
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", subscriber.IdentityUserId);
             return View(subscriber);
         }
+
+
 
         // GET: Subscribers/Edit/5
         public async Task<IActionResult> Edit(int? id)
