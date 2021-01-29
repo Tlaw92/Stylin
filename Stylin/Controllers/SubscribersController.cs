@@ -12,6 +12,7 @@ using Stylin.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Stylin.UtilityClasses;
 
 namespace Stylin.Controllers
 {
@@ -19,10 +20,12 @@ namespace Stylin.Controllers
     public class SubscribersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IWebHostEnvironment _hostingEnvironment;
 
-        public SubscribersController(ApplicationDbContext context)
+        public SubscribersController(ApplicationDbContext context, IWebHostEnvironment _webHostEnvironment)
         {
             _context = context;
+            _hostingEnvironment = _webHostEnvironment;
         }
 
         // GET: Subscribers
@@ -70,10 +73,15 @@ namespace Stylin.Controllers
         //Manipulate file to be able to save on server
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormFile file,/*[Bind("Id,FirstName,LastName,Address,ZipCode,City,State,PictureFile,IdentityUserId")]*/ Subscriber subscriber)
+        public async Task<IActionResult> Create(IFormFile file, Subscriber subscriber) //Bind was here before
         {
+           
+           
             if (ModelState.IsValid)
             {
+                SaveImage saveImg = new SaveImage(_hostingEnvironment);
+                string path =await saveImg.Save(file);
+                subscriber.Picture = path;
                 _context.Add(subscriber);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
