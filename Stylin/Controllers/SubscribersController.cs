@@ -56,6 +56,14 @@ namespace Stylin.Controllers
             {
                 return NotFound();
             }
+            //below converts the pathing slash format
+            string path = subscriber.Picture.Replace(@"\", "/");
+            string localpath= "C:/Users/TLaw/Documents/DCC2/CapstoneWeek/Stylin/Stylin/wwwroot/";
+            subscriber.Picture = path.Replace(localpath, "https://localhost:44377/");
+            //subscriber.Picture = path;
+            //subscriber.Picture.Replace(@"\","/"); 
+            //C:\Users\TLaw\Documents\DCC2\CapstoneWeek\Stylin\Stylin\wwwroot\Uploads\alladin.jpg
+
 
             return View(subscriber);
         }
