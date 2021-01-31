@@ -34,5 +34,7 @@ namespace Stylin.Data
         }
 
         public DbSet<Stylin.Models.Subscriber> Subscriber { get; set; }
+
+        public DbSet<Stylin.Models.Style> Style { get; set; }
     }
 }

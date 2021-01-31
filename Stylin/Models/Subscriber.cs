@@ -35,6 +35,9 @@ namespace Stylin.Models
             }
         }
 
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
         public string Address { get; set; }
 
         [DataType(DataType.PostalCode)]
@@ -47,11 +50,18 @@ namespace Stylin.Models
         [NotMapped]
         public IFormFile PictureFile { get; set; }
 
+        public int Token { get; set; }
+
+        [Display(Name = "Style Name")]
+        public string StyleName { get; set; }
+
+        //[ForeignKey("Style")]
+        //public int StyleId { get; set; }
+        //public Style Style { get; set; }
+
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
-
-
     }
 
 

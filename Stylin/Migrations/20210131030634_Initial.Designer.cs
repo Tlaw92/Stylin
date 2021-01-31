@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Stylin.Data;
 
-namespace Stylin.Data.Migrations
+namespace Stylin.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210128220117_Initial")]
+    [Migration("20210131030634_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,15 +50,15 @@ namespace Stylin.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cc77ca72-7102-44a9-aee8-2804f5b99e5d",
-                            ConcurrencyStamp = "551fa286-60b5-4e42-9a41-1aba9bc0dd80",
+                            Id = "1d70088a-07f5-4820-ad9a-c614dab973b7",
+                            ConcurrencyStamp = "eb4e128b-ccaa-4941-9a9a-0f953c91ed46",
                             Name = "Subscriber",
                             NormalizedName = "SUBSCRIBER"
                         },
                         new
                         {
-                            Id = "9afa3a67-b5ee-4398-a1d6-d806b9b072b0",
-                            ConcurrencyStamp = "65cc8fc8-3a6f-4900-9f1b-a4d25684204f",
+                            Id = "e29c2d0d-124b-45dc-a8ca-eab449153086",
+                            ConcurrencyStamp = "736d0a11-ade4-49e6-807b-1fcc941b6adc",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -233,6 +233,21 @@ namespace Stylin.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Stylin.Models.Style", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("StyleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Style");
+                });
+
             modelBuilder.Entity("Stylin.Models.Subscriber", b =>
                 {
                     b.Property<int>("Id")
@@ -260,11 +275,20 @@ namespace Stylin.Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Picture")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StyleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Token")
+                        .HasColumnType("int");
 
                     b.Property<int>("ZipCode")
                         .HasColumnType("int");

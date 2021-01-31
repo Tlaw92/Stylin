@@ -19,6 +19,7 @@ namespace Stylin.Controllers
     [Authorize(Roles = "Subscriber")]
     public class SubscribersController : Controller
     {
+        //Why we need these? - 
         private readonly ApplicationDbContext _context;
         private IWebHostEnvironment _hostingEnvironment;
 
@@ -56,14 +57,11 @@ namespace Stylin.Controllers
             {
                 return NotFound();
             }
-            //below converts the pathing slash format
+            //below converts the pathing slash format by replacing backslashes with forward slashes
             string path = subscriber.Picture.Replace(@"\", "/");
             string localpath= "C:/Users/TLaw/Documents/DCC2/CapstoneWeek/Stylin/Stylin/wwwroot/";
-            subscriber.Picture = path.Replace(localpath, "https://localhost:44377/");
-            //subscriber.Picture = path;
-            //subscriber.Picture.Replace(@"\","/"); 
-            //C:\Users\TLaw\Documents\DCC2\CapstoneWeek\Stylin\Stylin\wwwroot\Uploads\alladin.jpg
-
+            //Take the crap path and replace with local server to finally have the correct format
+            subscriber.Picture = path.Replace(localpath, "https://localhost:44377/"); //the https local host will now be replacing everything in line 61 passes the = sign
 
             return View(subscriber);
         }
@@ -87,11 +85,17 @@ namespace Stylin.Controllers
            
             if (ModelState.IsValid)
             {
-                SaveImage saveImg = new SaveImage(_hostingEnvironment);
-                string path =await saveImg.Save(file);
+                //Explain whats happening below
+                SaveImage saveImg = new SaveImage(_hostingEnvironment);// !!! Why do I pass _hostingEnvironment? !!!
+                string path = await saveImg.Save(file);
                 subscriber.Picture = path;
                 _context.Add(subscriber);
                 await _context.SaveChangesAsync();
+
+                //Sending message to subscriber
+                SendMessage sendMessage = new SendMessage();
+                //string MessageBody = "Hey" + subscriber.FullName + ", Thank you for creating profile. From Stylin".
+                sendMessage.SendText("+18053193640", "Hey, "+subscriber.FullName+", Thank you for creating profile. Regards, STylin.");
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", subscriber.IdentityUserId);
