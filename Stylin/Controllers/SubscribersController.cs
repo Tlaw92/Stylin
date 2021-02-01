@@ -86,16 +86,18 @@ namespace Stylin.Controllers
             if (ModelState.IsValid)
             {
                 //Explain whats happening below
-                SaveImage saveImg = new SaveImage(_hostingEnvironment);// !!! Why do I pass _hostingEnvironment? !!!
+                SaveImage saveImg = new SaveImage(_hostingEnvironment);// !!! Why do I pass _hostingEnvironment? !!! Study hostingenv
                 string path = await saveImg.Save(file);
                 subscriber.Picture = path;
                 _context.Add(subscriber);
                 await _context.SaveChangesAsync();
-
+                //place line sof code below anywhereyou want a text to be sent to Subscriber
                 //Sending message to subscriber
                 SendMessage sendMessage = new SendMessage();
                 //string MessageBody = "Hey" + subscriber.FullName + ", Thank you for creating profile. From Stylin".
-                sendMessage.SendText("+18053193640", "Hey, "+subscriber.FullName+", Thank you for creating profile. Regards, STylin.");
+                sendMessage.SendText("+18053193640", "Hey, " + subscriber.FullName + ", Thank you for creating profile. Regards, Stylin.");
+                //
+                //
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", subscriber.IdentityUserId);
