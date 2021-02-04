@@ -55,6 +55,12 @@ namespace Stylin.Models
         [Display(Name = "Style Name")]
         public string StyleName { get; set; }
 
+        [Display(Name = "Package Price")]
+        public int PackagePrice { get; set; }
+
+        [Display(Name = "Delivery Frequency")]
+        public string DeliveryFreq { get; set; }
+
         //[ForeignKey("Style")]
         //public int StyleId { get; set; }
         //public Style Style { get; set; }

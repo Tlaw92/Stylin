@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Stylin.Data;
 
 namespace Stylin.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210203195914_Initial4")]
+    partial class Initial4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace Stylin.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e5ab99cc-e474-4d5c-b9a2-42b3a4b57440",
-                            ConcurrencyStamp = "f2bddb2f-0073-4b83-ac02-05b7922de215",
+                            Id = "ef86a42b-e5fd-4ceb-bcd6-7217a3cee5e3",
+                            ConcurrencyStamp = "ef1c2ed0-c375-4d57-835a-0f2682264888",
                             Name = "Subscriber",
                             NormalizedName = "SUBSCRIBER"
                         },
                         new
                         {
-                            Id = "8b6da282-0a8b-4503-b31e-ea4388cdb7c9",
-                            ConcurrencyStamp = "a9e2e423-9353-41fd-b765-fea40a80d8d7",
+                            Id = "94939e4a-c33c-4f82-bda1-cd9e0b29d418",
+                            ConcurrencyStamp = "aaf7c4db-277b-4c76-96df-37b069fa7661",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -259,8 +261,8 @@ namespace Stylin.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DeliveryFreq")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DeliveryFreq")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()

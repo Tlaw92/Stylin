@@ -57,10 +57,9 @@ namespace Stylin.UtilityClasses
         }
         public void SendText(string PhoneNumber, string TextBody)
         {
-            //string accountSid = Environment.GetEnvironmentVariable("Twilio");
-            //string authToken = Environment.GetEnvironmentVariable("876f16f078c6d4b33ea0f874856e6774");
+
             Twilio.TwilioClient.SetUsername("TLaw92");
-            TwilioClient.Init("AC640eee77dd161632095708a5a4a23255", "876f16f078c6d4b33ea0f874856e6774");
+            TwilioClient.Init("AC640eee77dd161632095708a5a4a23255", "a57428eb0c67cbb00bc29777de013abc");
 
             var message = MessageResource.Create(
                 body: TextBody,

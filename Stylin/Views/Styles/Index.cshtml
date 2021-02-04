@@ -1,0 +1,219 @@
+﻿﻿
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+
+
+<style>
+    #main-container {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+    }
+
+    .question {
+        display: none;
+    }
+
+    .show {
+        display: block;
+    }
+
+    .hide {
+        display: none;
+    }
+</style>
+
+<div class="container text-center align-middle hide" id="success">
+    <div>
+        Hey, <span><strong id="subscriberName"></strong>, Your Selected Package is:</span>
+        <p id="styleName">
+
+        </p>
+    </div>
+
+</div>
+
+<div class="container text-center align-middle" id="main-container">
+    <div class="questions-container">
+        <div id="question1" class="question show">
+            <p>Are you active on a daily basis?</p>
+            Yes <input type="checkbox" value="Yes" id="sporty">
+            No <input type="checkbox" value="No" id="sporty">
+
+        </div>
+
+        <div id="question2" class="question">
+
+            <p> Do you like 1960’s hippie aesthetic and festival culture?</p>
+
+            Yes <input type="checkbox" value="Yes" id="boho">
+            No <input type="checkbox" value="No" id="boho">
+
+        </div>
+
+        <div id="question3" class="question">
+            <p> Do you need your Clothes to widthstand hardfalls to the ground and last long?</p>
+
+            Yes <input type="checkbox" value="Yes" id="skater">
+            No <input type="checkbox" value="No" id="skater">
+
+        </div>
+
+        <div id="question4" class="question">
+            <p>Do you like to look presentable for the office?</p>
+
+            Yes <input type="checkbox" value="Yes" id="professional">
+            No <input type="checkbox" value="No" id="professional">
+
+        </div>
+
+        <div id="question5" class="question">
+            <p>Will you be at the beach or pool?</p>
+
+            Yes <input type="checkbox" value="Yes" id="swim-wear">
+            No <input type="checkbox" value="No" id="swim-wear">
+        </div>
+
+        <div id="question6" class="question">
+
+            <p>Do you like Pop-Culture Merchandise pertaining to certain bands or Movies?</p>
+            Yes <input type="checkbox" value="Yes" id="street-wear">
+            No <input type="checkbox" value="No" id="street-wear">
+
+
+        </div>
+
+
+        <div id="question7" class="question">
+            <p>Do you like clothes that you use to lounge around?</p>
+
+            Yes <input type="checkbox" value="Yes" id="lounge-wear">
+            No <input type="checkbox" value="No" id="lounge-wear">
+
+
+
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button id="previous" class="hide">Previous</button>
+        <button id="next">Next</button>
+    </div>
+    <div>
+        <button id="submit" style="display:none">Submit Answers</button>
+    </div>
+    <span class="text-danger" id="error" style="display: none;">
+        This is the last question.
+    </span>
+</div>
+
+<script>
+
+    //Pushing all the values in array
+
+    const nextButton = document.querySelector("#next");
+    let answers = [];
+    nextButton.addEventListener('click', function (e) {
+
+
+
+        currentQuestion = document.querySelector(".show");
+
+        if (currentQuestion.id === "question1") {
+            if (document.querySelector("#sporty").checked) {
+                answers.push("sporty");
+            }
+        }
+        if (currentQuestion.id === "question2") {
+            if (document.querySelector("#boho").checked) {
+                answers.push("boho");
+            }
+        }
+        if (currentQuestion.id === "question3") {
+            if (document.querySelector("#skater").checked) {
+                answers.push("skater");
+            }
+        }
+        if (currentQuestion.id === "question4") {
+            if (document.querySelector("#professional").checked)
+                answers.push("professional");
+
+        }
+        if (currentQuestion.id === "question5") {
+            if (document.querySelector("#swim-wear").checked)
+                answers.push("swim-wear");
+        }
+        if (currentQuestion.id === "question6") {
+            if (document.querySelector("#street-wear").checked)
+                answers.push("street-wear");
+        }
+
+        if (currentQuestion.id === 'question7') {
+
+            if (document.querySelector("#lounge-wear").checked) {
+                answers.push("lounge-wear");
+            }
+            document.querySelector("#error").style.display = "block";
+            document.querySelector("#submit").style.display = "block";
+            console.log(answers);
+            return;
+        }
+
+
+        nextSibling = currentQuestion.nextElementSibling;
+        currentQuestion.classList.remove('show');
+
+
+        nextSibling.classList.add('show');
+
+        //Sending Data to Controller
+
+
+    });
+
+    const submit = document.querySelector("#submit");
+    submit.addEventListener('click', function (e) {
+        //var jsonArray = JSON.parse(JSON.stringify(answers));
+
+        //parsing array into JSON Object here
+
+        let ans = {};
+
+        for (let i = 0; i < answers.length; i++) {
+            ans['answer' + i] = answers[i];
+        }
+
+        let answer = JSON.stringify(ans);
+
+
+        $.ajax(
+            {
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'JSON',
+                url: '/Styles/Answers',
+                data: answer,
+                success:
+                    function (response) {
+                        // Generate HTML table.()   
+                       //Get the element with the ID of subscriberName, put the first name of the subscriber in html
+                        document.querySelector("#subscriberName").innerHTML = response.firstName;
+                        //Get the element with the ID pf styleName
+                        document.querySelector("#styleName").innerHTML = response.styleName;
+                        //response = JSON.stringify(response);
+                        document.querySelector("#success").classList.add('show');
+                        document.querySelector("#success").classList.remove('hide');
+                        document.querySelector("#main-container").classList.add('hide');
+                    },
+                error:
+                    function (response) {
+                        debugger;
+                        alert("Error: " + response);
+                    }
+            });
+    })
+</script>
