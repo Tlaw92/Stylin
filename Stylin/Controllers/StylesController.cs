@@ -38,11 +38,18 @@ namespace Stylin.Controllers
         //[FromBody] attribute is an update in .NET Core to get JSON Data from client
         public  Subscriber Answers([FromBody] Answer answer)
         {
+            DateTime today = DateTime.Now;
+            DateTime deliveryDate = new DateTime();
+            deliveryDate = today.AddDays(2);
+            
+            string DeliveryDate = today.ToString("YYYY-MM-dd");
+
+            string date = deliveryDate.ToLongDateString();
             //1. Who is logged in
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var subscriber = _context.Subscriber.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             /// Subscriber subscriber = new Subscriber();
-
+            subscriber.PackagePrice = 0;
             if (answer.answer0 != null)
             {
                 subscriber.PackagePrice += 10;
@@ -79,12 +86,15 @@ namespace Stylin.Controllers
             }
 
             subscriber.DeliveryFreq = "Once a Month";
+            subscriber.DeliveryDate = date;
+
+
 
             subscriber.StyleName = answer.answer0 + ',' + answer.answer1 + ',' + answer.answer2 + ',' + answer.answer3 + ',' + answer.answer4 + ',' + answer.answer5 + ',' + answer.answer6;
             _context.Subscriber.Update(subscriber);
             _context.SaveChanges();
             
-            //return View(subscriber);
+            //return object(subscriber);
             return subscriber;
         }
 
@@ -211,6 +221,18 @@ namespace Stylin.Controllers
         private bool StyleExists(int id)
         {
             return _context.Style.Any(e => e.Id == id);
+        }
+
+        public IActionResult ConfirmPackage()
+        {
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var subscriber = _context.Subscriber.Where(c => c.IdentityUserId == userId).FirstOrDefault(); // Use First not Single
+
+            UtilityClasses.SendMessage sendMessage = new UtilityClasses.SendMessage();
+            sendMessage.SendText("+18053193640","Hey" + subscriber.FullName + ", Your Subscription Package <" + subscriber.StyleName + "> is expected to be delivered on" + subscriber.DeliveryDate);
+            return View();
+
         }
     }
 }

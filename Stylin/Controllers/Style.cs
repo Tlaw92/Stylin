@@ -8,6 +8,8 @@ using System.Security.Claims;
 
 namespace Stylin.Controllers
 {
+
+    //Why is this here? why is it inheriting from the Controller class? And why does it have a method called answers in it.
     public class Style : Controller
     {
         public IActionResult Index()

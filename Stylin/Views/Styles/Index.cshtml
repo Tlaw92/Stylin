@@ -7,6 +7,8 @@
 
 
 
+
+
 <style>
     #main-container {
         margin: 0;
@@ -28,11 +30,21 @@
 </style>
 
 <div class="container text-center align-middle hide" id="success">
-    <div>
-        Hey, <span><strong id="subscriberName"></strong>, Your Selected Package is:</span>
-        <p id="styleName">
-
-        </p>
+    <div class="card border-success mb-3" style="max-width: 18rem;">
+        <div class="card-header bg-transparent border-success" id="subscriberName"></div>
+        <div class="card-body text-success">
+            <span><strong>Style Name: </strong></span><h5 class="card-title" id="styleName"></h5>
+            <p class="card-text"><strong>Package Price: </strong><span><strong id="packagePrice"></strong></span></p>
+            <p class="card-text"><strong>Delivery Frequency: </strong> <span id="deliveryFreq"></span></p>
+            <span><strong>Arrival Date: </strong></span><p id="arrivalDate"></p>
+        </div>
+        <div class="card-footer bg-transparent border-success">
+            <button class="btn btn-primary">
+                <a href="/Styles/ConfirmPackage">
+                    Confirm
+                </a>
+            </button>
+        </div>
     </div>
 
 </div>
@@ -204,6 +216,12 @@
                         document.querySelector("#subscriberName").innerHTML = response.firstName;
                         //Get the element with the ID pf styleName
                         document.querySelector("#styleName").innerHTML = response.styleName;
+                        //get dd id
+                        document.querySelector("#arrivalDate").innerHTML = response.deliveryDate;
+                        //
+                        document.querySelector("#packagePrice").innerHTML = response.packagePrice;
+                        //
+                        document.querySelector("#deliveryFreq").innerHTML = response.deliveryFreq;
                         //response = JSON.stringify(response);
                         document.querySelector("#success").classList.add('show');
                         document.querySelector("#success").classList.remove('hide');
@@ -215,5 +233,7 @@
                         alert("Error: " + response);
                     }
             });
+
+   
     })
 </script>

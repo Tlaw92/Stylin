@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Stylin.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,9 +58,10 @@ namespace Stylin.UtilityClasses
         }
         public void SendText(string PhoneNumber, string TextBody)
         {
-
+            
+            APIKeys aPIKeys = new APIKeys();
             Twilio.TwilioClient.SetUsername("TLaw92");
-            TwilioClient.Init("AC640eee77dd161632095708a5a4a23255", "a57428eb0c67cbb00bc29777de013abc");
+            TwilioClient.Init(APIKeys.TWILIO_API_SID, APIKeys.TWILIO_API_AUTH);
 
             var message = MessageResource.Create(
                 body: TextBody,

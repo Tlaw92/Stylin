@@ -61,6 +61,8 @@ namespace Stylin.Models
         [Display(Name = "Delivery Frequency")]
         public string DeliveryFreq { get; set; }
 
+        public string DeliveryDate { get; set; }
+
         //[ForeignKey("Style")]
         //public int StyleId { get; set; }
         //public Style Style { get; set; }

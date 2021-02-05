@@ -33,8 +33,8 @@ namespace Stylin.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var shopper = _context.Subscriber.Where(c => c.IdentityUserId == userId).FirstOrDefault(); // Use First not Single
-            if (shopper == null)
+            var subscriber = _context.Subscriber.Where(c => c.IdentityUserId == userId).FirstOrDefault(); // Use First not Single
+            if (subscriber == null)
             {
                 return RedirectToAction("Create");
             }

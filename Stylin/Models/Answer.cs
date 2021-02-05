@@ -13,7 +13,6 @@ namespace Stylin.Models
         public string answer3 { get; set; }
         public string answer4 { get; set; }
         public string answer5 { get; set; }
-
         public string answer6 { get; set; }
     }
 }
