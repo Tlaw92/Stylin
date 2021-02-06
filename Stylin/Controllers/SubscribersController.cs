@@ -16,7 +16,7 @@ using Stylin.UtilityClasses;
 
 namespace Stylin.Controllers
 {
-    [Authorize(Roles = "Subscriber")]
+    //[Authorize(Roles = "Subscriber")]
     public class SubscribersController : Controller
     {
         //Why we need these? - 
@@ -79,7 +79,7 @@ namespace Stylin.Controllers
         //Manipulate file to be able to save on server
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormFile file, Subscriber subscriber) //Bind was here before
+        public async Task<IActionResult> Create(IFormFile file, Subscriber subscriber) //Bind wcan as here before
         {
            
            
@@ -95,7 +95,7 @@ namespace Stylin.Controllers
                 //Sending message to subscriber
                 SendMessage sendMessage = new SendMessage();
                 //string MessageBody = "Hey" + subscriber.FullName + ", Thank you for creating profile. From Stylin".
-                sendMessage.SendText("+18053193640", "Hey, " + subscriber.FullName + ", Thank you for creating profile. Regards, Stylin.");
+           //   //  //sendMessage.SendText("+18053193640", "Hey, " + subscriber.FullName + ", Thank you for creating profile. Regards, Stylin.");
                 //
                 //
                 return RedirectToAction(nameof(Index));
@@ -192,6 +192,21 @@ namespace Stylin.Controllers
         private bool SubscriberExists(int id)
         {
             return _context.Subscriber.Any(e => e.Id == id);
+        }
+
+        public IActionResult ShowDeliveries()
+        {
+            return View();
+        }
+        public List<Subscriber> SubscribersWithPackage()
+        {
+            Subscriber subscriber = new Subscriber();
+            List<Subscriber> subscribers = new List<Subscriber>();
+            subscribers = _context.Subscriber.Where(s=>s.PackageOrdered==1).ToList();
+            //subscriber = _context.Subscriber.Where(c => c.StyleName !=null).FirstOrDefault(); // Use First not Single
+            // subscribers.Add(subscriber);
+
+            return subscribers;
         }
     }
 }

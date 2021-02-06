@@ -62,14 +62,16 @@ namespace Stylin.Models
         public string DeliveryFreq { get; set; }
 
         public string DeliveryDate { get; set; }
-
-        //[ForeignKey("Style")]
-        //public int StyleId { get; set; }
-        //public Style Style { get; set; }
+        
+        public int PackageOrdered { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
+
+        //[ForeignKey("Style")]
+        //public int StyleId { get; set; }
+        //public Style Style { get; set; }
     }
 
 

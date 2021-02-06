@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Stylin.Data;
 
 namespace Stylin.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210206161440_employeeModel")]
+    partial class employeeModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace Stylin.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4a149a99-9c3f-424d-a71b-b67d21f2874e",
-                            ConcurrencyStamp = "de39d739-c159-47f6-b878-60c015a86576",
+                            Id = "fd809331-d51b-412c-a1bb-1111d565dcfa",
+                            ConcurrencyStamp = "7bab07dc-2e33-4f10-993b-8cc2f6f2462e",
                             Name = "Subscriber",
                             NormalizedName = "SUBSCRIBER"
                         },
                         new
                         {
-                            Id = "5ee0ce9a-5168-4ad5-841d-d45645d548cb",
-                            ConcurrencyStamp = "639eed39-ac69-4d13-8b65-ce94193dbb48",
+                            Id = "ee378d53-6675-46de-be65-4be0b8cd0d2e",
+                            ConcurrencyStamp = "f834739a-042e-4f77-91ba-fb070241ff9a",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -231,34 +233,6 @@ namespace Stylin.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Stylin.Models.Employee", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnName("FirstName")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("IdentityUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdentityUserId");
-
-                    b.ToTable("Employee");
-                });
-
             modelBuilder.Entity("Stylin.Models.Style", b =>
                 {
                     b.Property<int>("Id")
@@ -306,9 +280,6 @@ namespace Stylin.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
-
-                    b.Property<int>("PackageOrdered")
-                        .HasColumnType("int");
 
                     b.Property<int>("PackagePrice")
                         .HasColumnType("int");
@@ -387,13 +358,6 @@ namespace Stylin.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Stylin.Models.Employee", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
-                        .WithMany()
-                        .HasForeignKey("IdentityUserId");
                 });
 
             modelBuilder.Entity("Stylin.Models.Subscriber", b =>
