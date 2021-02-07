@@ -47,7 +47,7 @@ namespace Stylin.Controllers
             string date = deliveryDate.ToLongDateString();
             //1. Who is logged in
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var subscriber = _context.Subscriber.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var subscriber = _context.Subscriber.Where(c => c.IdentityUserId == userId).SingleOrDefault();
             /// Subscriber subscriber = new Subscriber();
             subscriber.PackagePrice = 0;
             if (answer.answer0 != null)

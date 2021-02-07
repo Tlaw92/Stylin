@@ -81,14 +81,17 @@ namespace Stylin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(IFormFile file, Subscriber subscriber) //Bind wcan as here before
         {
-           
-           
+            //var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var subscriber = _context.Subscriber.Where(c => c.IdentityUserId == userId).FirstOrDefault(); 
+
             if (ModelState.IsValid)
             {
                 //Explain whats happening below
                 SaveImage saveImg = new SaveImage(_hostingEnvironment);// !!! Why do I pass _hostingEnvironment? !!! Study hostingenv
                 string path = await saveImg.Save(file);
                 subscriber.Picture = path;
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                subscriber.IdentityUserId = userId;
                 _context.Add(subscriber);
                 await _context.SaveChangesAsync();
                 //place line sof code below anywhereyou want a text to be sent to Subscriber
