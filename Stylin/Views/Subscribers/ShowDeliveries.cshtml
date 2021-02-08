@@ -84,7 +84,37 @@
         loadMap(lts, pkgs);
 
     });
-    function loadMap(latlngs,pkgs) {        let map = new google.maps.Map(document.getElementById('map'), {            zoom: 10,            center: new google.maps.LatLng(34.274647, -119.229034),            mapTypeId: google.maps.MapTypeId.ROADMAP        });        var infowindow = new google.maps.InfoWindow();        var marker;        for (let k = 0; k < latlngs.length; k++) {            marker = new google.maps.Marker({                position: new google.maps.LatLng(latlngs[k].lat, latlngs[k].lng),                map: map            });            marker.setMap(map);            google.maps.event.addListener(marker, 'click', (function (marker, k) {                return function () {                    infowindow.setContent(pkgs[k]);                    infowindow.open(map, marker);                }            })(marker, k));        }        console.log(latlngs);    }
+    function loadMap(latlngs,pkgs) {
+
+        let map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 10,
+            center: new google.maps.LatLng(34.274647, -119.229034),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+
+        var infowindow = new google.maps.InfoWindow();
+
+        var marker;
+
+        for (let k = 0; k < latlngs.length; k++) {
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(latlngs[k].lat, latlngs[k].lng),
+                map: map
+            });
+
+            marker.setMap(map);
+
+            google.maps.event.addListener(marker, 'click', (function (marker, k) {
+                return function () {
+                    infowindow.setContent(pkgs[k]);
+                    infowindow.open(map, marker);
+                }
+            })(marker, k));
+        }
+
+        console.log(latlngs);
+    }
 
 
 </script>

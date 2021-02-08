@@ -156,5 +156,12 @@ namespace Stylin.Controllers
         {
             return _context.Employee.Any(e => e.Id == id);
         }
+
+        public IActionResult Graph()
+        {
+
+
+            return View();
+        }
     }
 }

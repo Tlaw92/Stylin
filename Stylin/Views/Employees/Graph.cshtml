@@ -1,0 +1,131 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<link href="~/css/GraphStyle.css" rel="stylesheet" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<style>
+
+    #chart {
+        padding: 0;
+        max-width: 380px;
+        margin: 35px auto;
+    }
+</style>
+
+<script>
+    window.Promise ||
+        document.write(
+            '<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"><\/script>'
+        )
+    window.Promise ||
+        document.write(
+            '<script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"><\/script>'
+        )
+    window.Promise ||
+        document.write(
+            '<script src="https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn"><\/script>'
+        )
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
+<script>
+    // Based on https://gist.github.com/blixt/f17b47c62508be59987b
+    var _seed = 42;
+    Math.random = function () {
+        _seed = _seed * 16807 % 2147483647;
+        return (_seed - 1) / 2147483646;
+    };
+</script>
+
+<div id="chart"></div>
+
+<script>
+
+    $.ajax(
+        {
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            dataType: 'JSON',
+            url: '/Subscribers/AllSubscribers',
+            success:
+                function (response) {
+                    // Generate HTML table.()
+                    //Writig wholde code to manipulate data fro graph
+                    let SportyLounge = "sporty,lounge-wear,,,,,";
+                    let ProfessionalSwimWear = "professional,swim-wear,,,,,";
+                    let Boho = "boho,,,,,,";
+                    let sporty = "sporty,,,,,,";
+
+                    let sportyLoungFreq = 0;
+                    let professionalSwimWearFreq = 0;
+                    let bohoFreq = 0;
+                    let sportyFreq = 0;
+
+
+                    for (let i = 0; i < response.length; i++) {
+
+                        if (response[i].styleName === SportyLounge)
+                            sportyLoungFreq += 1;
+
+                        if (response[i].styleName === ProfessionalSwimWear)
+                            professionalSwimWearFreq += 1;
+
+                        if (response[i].styleName === Boho)
+                            bohoFreq += 1;
+
+                        if (response[i].styleName === sporty)
+                            sportyFreq += 1;
+
+                    }
+                    let data = [sportyLoungFreq, professionalSwimWearFreq, bohoFreq, sportyFreq];
+                    localStorage.setItem("Data", JSON.stringify(data));
+
+                },
+            error:
+                function (response) {
+                    debugger;
+                    alert("Error: " + response);
+                }
+        });
+
+
+    let series = JSON.parse(localStorage.getItem("Data"));
+    debugger;
+    var options = {
+        series: series,
+        chart: {
+            width: 380,
+            type: 'pie',
+        },
+        labels: ["SportyLoung","ProfessionaSwimWear","Boho", "Sporty"],
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }]
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+
+
+
+</script>
+
+
+

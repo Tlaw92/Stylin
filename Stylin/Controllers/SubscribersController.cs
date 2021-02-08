@@ -211,5 +211,15 @@ namespace Stylin.Controllers
 
             return subscribers;
         }
+
+        public List<Subscriber> AllSubscribers()
+        {
+            Subscriber subscriber = new Subscriber();
+            List<Subscriber> subscribers = new List<Subscriber>();
+            subscribers = _context.Subscriber.ToList();
+
+
+            return subscribers;
+        }
     }
 }
