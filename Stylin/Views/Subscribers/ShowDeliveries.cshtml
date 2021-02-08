@@ -4,23 +4,32 @@
 @{
 }
 
+<style>
+    #map{
+        height:350px;
+        width:350px;
+    }
+</style>
 
 <div>
     <button id="getData">Get Data</button>
 
-    <div id="map">
-        
+    <div style="position: absolute" id="map">
+
     </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2Uyq82S9tdxWSHz4c4eI4E1IEHqjkaFg">
+</script>
+    
 <script>
 
-
- 
     $("#getData").click(function () {
 
         let address = [];
+        let packages = [];
+        let arrivalDate = [];
 
         $.ajax(
             {
@@ -34,7 +43,12 @@
                         for (let i = 0; i < response.length; i++) {
                             let adr = response[i].address + response[i].city + response[i].zipCode + response[i].state;
                             address.push(adr);
-                        }
+                            let pkg = response[i].styleName;
+                            packages.push(pkg);
+                            debugger;
+                            localStorage.setItem("Address", JSON.stringify(address));
+                            localStorage.setItem("Packages", JSON.stringify(packages));
+                        };
                     },
                 error:
                     function (response) {
@@ -43,70 +57,34 @@
                     }
             });
 
-        //Calling ajax to get LatLong of application
+        address = JSON.parse(localStorage.getItem("Address"));
         let latlng = { lat: 0, lng: 0 };
         let latLong = [];
-
+        
         for (let k = 0; k < address.length; k++) {
-
             $.ajax({
                 url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + address[k] + "&key=AIzaSyC2Uyq82S9tdxWSHz4c4eI4E1IEHqjkaFg",
+                success:
+                    function (response) {
+                        debugger;
+                        latlng.lat = response.results[0].geometry.location.lat;
+                        latlng.lng = response.results[0].geometry.location.lng;
+                        let copy = { ...latlng };
+                        latLong.push(copy);
+                        localStorage.setItem("LatLongs", JSON.stringify(latLong));
+                        
 
-            }).done(function (response) {
+                    }
 
-                //Code here to show multiple maps
-
-                latlng.lng = response.results[0].geometry.location.lng;
-                latlng.lat = response.response[0].geometry.location.lat;
-
-                let newCopy = { ...latlng };
-
-                latLong.push(newCopy);
-                localStorage.setItem('LatLongs', JSON.stringify(latlngs));
-            });
-            latLongs.lat = response.results[0].geometry.location.lat
+            })
         }
 
-        //Show Google Map here\\
+        let lts = JSON.parse(localStorage.getItem("LatLongs"));
+        let pkgs = JSON.parse(localStorage.getItem("Packages"));
+        loadMap(lts, pkgs);
 
+    });
+    function loadMap(latlngs,pkgs) {        let map = new google.maps.Map(document.getElementById('map'), {            zoom: 10,            center: new google.maps.LatLng(34.274647, -119.229034),            mapTypeId: google.maps.MapTypeId.ROADMAP        });        var infowindow = new google.maps.InfoWindow();        var marker;        for (let k = 0; k < latlngs.length; k++) {            marker = new google.maps.Marker({                position: new google.maps.LatLng(latlngs[k].lat, latlngs[k].lng),                map: map            });            marker.setMap(map);            google.maps.event.addListener(marker, 'click', (function (marker, k) {                return function () {                    infowindow.setContent(pkgs[k]);                    infowindow.open(map, marker);                }            })(marker, k));        }        console.log(latlngs);    }
 
-        let data = JSON.parse(localStorage.getItem("LatLongs"));
-        loadMap(data);
-
-
-    })
-
-
-    function loadMap(latlngs) {
-
-        let map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 10,
-            center: new google.maps.LatLng(34.274647, -119.229034),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        });
-
-
-        var infowindow = new google.maps.InfoWindow();
-
-        var marker;
-
-        for (let k = 0; k < latlngs.length; k++) {
-            marker = new google.maps.Marker({
-                position: new google.maps.LatLng(latlngs[k].lat, latlngs[k].lng),
-                map: map
-            });
-
-            marker.setMap(map);
-
-            google.maps.event.addListener(marker, 'click', (function (marker, k) {
-                return function () {
-                    infowindow.setContent("hello checking");
-                    infowindow.open(map, marker);
-                }
-            })(marker, k));
-        }
-
-        console.log(latlngs);
-    }
 
 </script>
