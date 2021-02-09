@@ -38,12 +38,15 @@ namespace Stylin.Controllers
         //[FromBody] attribute is an update in .NET Core to get JSON Data from client
         public  Subscriber Answers([FromBody] Answer answer)
         {
+            //set today equal to the current day 
             DateTime today = DateTime.Now;
+            //instantiate a deliveryDate variable
             DateTime deliveryDate = new DateTime();
+            //set deliverydate to two days after 'today's value
             deliveryDate = today.AddDays(2);
-            
+            //Convert DeliveryDate to specified format
             string DeliveryDate = today.ToString("YYYY-MM-dd");
-
+            //set date equal to DeliveryDate variable and use .ToLongDateString() to return string that contains the long date string representation
             string date = deliveryDate.ToLongDateString();
             //1. Who is logged in
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -89,7 +92,7 @@ namespace Stylin.Controllers
             subscriber.DeliveryDate = date;
 
 
-
+            //Maybe get rid of comas to fix weird format issue
             subscriber.StyleName = answer.answer0 + ',' + answer.answer1 + ',' + answer.answer2 + ',' + answer.answer3 + ',' + answer.answer4 + ',' + answer.answer5 + ',' + answer.answer6;
             _context.Subscriber.Update(subscriber);
             _context.SaveChanges();

@@ -48,25 +48,33 @@ namespace Stylin.UtilityClasses
         }
     }
 
-
+    //This is not inside SAveImgae classs. SendMessages and SAveImage classes are inside UtilityClasses namespace.
+    //I see. but, not technically.
     public class SendMessage
     {
 
         public SendMessage()
         {
-            //Nothing
+            
         }
         public void SendText(string PhoneNumber, string TextBody)
         {
-            
+           //APIKeys class obstantiated
+           
             APIKeys aPIKeys = new APIKeys();
+            //Twilio library
+            //Twilio.TwilioClient is the packge in .net which is responsbile for talking to all the twilio apis.
             Twilio.TwilioClient.SetUsername("TLaw92");
+            //TwilioClient.Init() is the function which actually kicks start your twilioclient library to call differnt mehtods in that.
+
             TwilioClient.Init(APIKeys.TWILIO_API_SID, APIKeys.TWILIO_API_AUTH);
 
+            //mesage resouurce is class in TwilioClient is to send and receieve messages to and from your application
+            // with the power of Twilio.
             var message = MessageResource.Create(
-                body: TextBody,
-                from: new Twilio.Types.PhoneNumber("+14049943666"),
-                to: new Twilio.Types.PhoneNumber(PhoneNumber)
+                body: TextBody,///body key of message object where all the body of message is present.
+                from: new Twilio.Types.PhoneNumber("+14049943666"),//Your Twilio Number, where the message will be sent.
+                to: new Twilio.Types.PhoneNumber(PhoneNumber)//The number to which the message will be sent.
             );
         }
 

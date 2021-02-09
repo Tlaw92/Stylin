@@ -4,22 +4,27 @@
 @{
 }
 
+<!--Basic styling for map element where that map will be loaded ultimately.-->
 <style>
     #map{
         height:350px;
         width:350px;
     }
 </style>
+<!--the main div container where we will get that map and button to load map.-->
+<div class="text-center mt-4">
+    <button id="getData" class="btn-primary">Get Data</button>
 
-<div>
-    <button id="getData">Get Data</button>
-
-    <div style="position: absolute" id="map">
+    <div style="position: absolute; top: 150px; left: 30%" id="map">
 
     </div>
 </div>
 
+<!--As we are using $ in our code which a jQuery literal to referecne jQuery code. Thats we are loading jQuery from google servers. if we dont' load it, $ would become undefined.-->
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!--loading here Google map library to show google map from google server-->
 <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2Uyq82S9tdxWSHz4c4eI4E1IEHqjkaFg">
 </script>
     
@@ -31,6 +36,17 @@
         let packages = [];
         let arrivalDate = [];
 
+         //What is Ajax used for? - 
+    //What is the type? -
+    //contentType? -
+    //datatype?
+    /*
+     1.Ajax
+     Aschornous call to reqeust to server toe get  data.
+    
+     type, contentType, dataType and other keys are in the object that we pass in the ajax function to get data real time.
+     */
+
         $.ajax(
             {
                 type: 'GET',
@@ -38,14 +54,17 @@
                 dataType: 'JSON',
                 url: '/Subscribers/SubscribersWithPackage',
                 success:
-                    function (response) {
+                    function (response) { //response is the data we get from server after we make call to server with Ajax
                         debugger;
                         for (let i = 0; i < response.length; i++) {
+                            //get full formated address for every user from resonse and pushing it in an address array.
                             let adr = response[i].address + response[i].city + response[i].zipCode + response[i].state;
                             address.push(adr);
+                            //getting styleNmae for every user and pushing it in packages array.
                             let pkg = response[i].styleName;
                             packages.push(pkg);
-                            debugger;
+                            
+                            //pushing the Address and Pakcges array in LocalSorage to use them later on inthe applicatoin.
                             localStorage.setItem("Address", JSON.stringify(address));
                             localStorage.setItem("Packages", JSON.stringify(packages));
                         };
@@ -56,21 +75,30 @@
                         alert("Error: " + response);
                     }
             });
-
+            //Getting the Address rray in from local storage.
         address = JSON.parse(localStorage.getItem("Address"));
         let latlng = { lat: 0, lng: 0 };
         let latLong = [];
-        
+
+        //in the loop, calling Google GeoCoding API for every address in the Address array to get Lat and Long values
         for (let k = 0; k < address.length; k++) {
             $.ajax({
                 url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + address[k] + "&key=AIzaSyC2Uyq82S9tdxWSHz4c4eI4E1IEHqjkaFg",
                 success:
                     function (response) {
-                        debugger;
+                        //Geting latlong value of curren taddress in Address array
                         latlng.lat = response.results[0].geometry.location.lat;
                         latlng.lng = response.results[0].geometry.location.lng;
+                        //cloning that the current latlng object
+
+                        //becasue object is reference type in javascript.
+                        //you need to have new object every type when you push that in array,
+                        //otherise it will get the previous value from object and paste it in array every time..
                         let copy = { ...latlng };
+
+                        //pushing that new copy in latlng array.
                         latLong.push(copy);
+                        //pushing latlng array in localStory with 'LatLongs' as its name.
                         localStorage.setItem("LatLongs", JSON.stringify(latLong));
                         
 
@@ -79,32 +107,47 @@
             })
         }
 
+        //gettting that LatLongs array from localStorage
         let lts = JSON.parse(localStorage.getItem("LatLongs"));
+        //getting pakcages array from the localStorage
         let pkgs = JSON.parse(localStorage.getItem("Packages"));
+
+        //calling loadMap function which takes two paramters to be execuated
+        /*1. The latlngs
+        2. pkgs
         loadMap(lts, pkgs);
+        */
 
     });
+
+    //The loadMap function which is responsibe for loading map document, geting form Gogole Servers
     function loadMap(latlngs,pkgs) {
 
+        //creating new map instance form Google.Map class
+
         let map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 10,
-            center: new google.maps.LatLng(34.274647, -119.229034),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            zoom: 10, //the zoom level of google map
+            center: new google.maps.LatLng(34.274647, -119.229034), //center of google map is set here
+            mapTypeId: google.maps.MapTypeId.ROADMAP // the type of google map wihch is RoadMap here
         });
 
 
+        //infoWinodw instance from google.mps class.
         var infowindow = new google.maps.InfoWindow();
 
-        var marker;
 
+        var marker;
+        ///We are using for loop to looop thourght every latlng ojbect from lallongs array that we get as a paramter
+        //and creating marker for every object with lat an long value.
         for (let k = 0; k < latlngs.length; k++) {
             marker = new google.maps.Marker({
                 position: new google.maps.LatLng(latlngs[k].lat, latlngs[k].lng),
                 map: map
             });
-
+            ///setting th current marker in the map.
             marker.setMap(map);
 
+            ///here are biding 'click' event on each marker,so when someone clicks on that, it will show some infowindo regarddin the infor about that merker.
             google.maps.event.addListener(marker, 'click', (function (marker, k) {
                 return function () {
                     infowindow.setContent(pkgs[k]);
@@ -113,7 +156,6 @@
             })(marker, k));
         }
 
-        console.log(latlngs);
     }
 
 

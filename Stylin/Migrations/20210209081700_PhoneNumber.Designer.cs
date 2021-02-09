@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Stylin.Data;
 
 namespace Stylin.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210209081700_PhoneNumber")]
+    partial class PhoneNumber
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace Stylin.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c66f3ffa-9346-447c-9d39-bd14893e7a6c",
-                            ConcurrencyStamp = "74d72751-7bf5-4be5-8b1c-6d0934426ed6",
+                            Id = "1b2b72e0-f153-44e1-b284-2c66973efedd",
+                            ConcurrencyStamp = "b7703525-de6f-42fc-9f2d-de22c821b126",
                             Name = "Subscriber",
                             NormalizedName = "SUBSCRIBER"
                         },
                         new
                         {
-                            Id = "66fb91ce-b895-4fdb-8d15-e1e8339f5c98",
-                            ConcurrencyStamp = "e4a466dc-3bed-4499-8be7-71c970903416",
+                            Id = "6c04ab10-6f0b-489f-941d-a7a9de41aa4a",
+                            ConcurrencyStamp = "223296b0-82bf-4e78-9570-5229313ccacf",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -312,9 +314,6 @@ namespace Stylin.Migrations
 
                     b.Property<int>("PackagePrice")
                         .HasColumnType("int");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Picture")
                         .HasColumnType("nvarchar(max)");

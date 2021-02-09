@@ -11,6 +11,11 @@ namespace Stylin.Models
 {
     public class Subscriber
     {
+
+        public Subscriber()
+        {
+            PhoneNumber = "+18053193640";
+        }
         [Key]
         public int Id { get; set; }
 
@@ -36,6 +41,7 @@ namespace Stylin.Models
         }
 
         [Display(Name = "Phone Number")]
+        
         public string PhoneNumber { get; set; }
 
         public string Address { get; set; }
@@ -72,6 +78,7 @@ namespace Stylin.Models
         //[ForeignKey("Style")]
         //public int StyleId { get; set; }
         //public Style Style { get; set; }
+
     }
 
 

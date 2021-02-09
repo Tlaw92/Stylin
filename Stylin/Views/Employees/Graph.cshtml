@@ -4,13 +4,16 @@
 @{
 }
 
+@*The href attribute specifies the URL of the page the link goes to*@
 <link href="~/css/GraphStyle.css" rel="stylesheet" />
-
+<!--loading jquery cdn here just to $ (jQuery) towl work in our code where write that $.ajax-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
-<style>
 
+
+<style>
+    /*Basic Stype of graph element*/
     #chart {
         padding: 0;
         max-width: 380px;
@@ -18,6 +21,7 @@
     }
 </style>
 
+<!--All the necessary files for that graph to work are being loaded by CDN JSDeliver server-->
 <script>
     window.Promise ||
         document.write(
@@ -33,10 +37,11 @@
         )
 </script>
 
-
+@*//src that gives access to apexcharts charts*@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-
+@*WHAT IN THE WORLD IS THIS??*@
+<!--The sample code files downllaed from apexchart.com, for the graph to be shown in our application-->
 <script>
     // Based on https://gist.github.com/blixt/f17b47c62508be59987b
     var _seed = 42;
@@ -46,10 +51,26 @@
     };
 </script>
 
+<!--The Div element to show real graph in the document.-->
+<div class="text-center mt-5">
+    <h1>Subscribers per style package</h1>
+    <h3>Which Style is most popular?</h3>
+</div>
+
 <div id="chart"></div>
 
 <script>
-
+    //What is Ajax used for? - 
+    //What is the type? -
+    //contentType? -
+    //datatype?
+    /*
+     1.Ajax
+     Aschornous call to reqeust to server toe get  data.
+     
+     type, contentType, dataType and other keys are in the object that we pass in the ajax function to get data real time.
+     */
+     
     $.ajax(
         {
             type: 'POST',
@@ -59,18 +80,22 @@
             success:
                 function (response) {
                     // Generate HTML table.()
-                    //Writig wholde code to manipulate data fro graph
+                    //Writing code to manipulate data from graph
+
+                    // set variables equal to the stylenames
                     let SportyLounge = "sporty,lounge-wear,,,,,";
                     let ProfessionalSwimWear = "professional,swim-wear,,,,,";
                     let Boho = "boho,,,,,,";
                     let sporty = "sporty,,,,,,";
 
+                    // Set all variables freq to 0
                     let sportyLoungFreq = 0;
                     let professionalSwimWearFreq = 0;
                     let bohoFreq = 0;
                     let sportyFreq = 0;
 
-
+                    //what is response?
+                    //Response is the result data that we get from server after we do ajax call to server.
                     for (let i = 0; i < response.length; i++) {
 
                         if (response[i].styleName === SportyLounge)
@@ -87,8 +112,10 @@
 
                     }
                     let data = [sportyLoungFreq, professionalSwimWearFreq, bohoFreq, sportyFreq];
+                    //Afer manipulating the response and fomratting in an array, we poush it in local storage to make persistant, so that we can get its value whenevery we need ti duiringhe lifecycle of applicaiton running.
                     localStorage.setItem("Data", JSON.stringify(data));
 
+                    //If there is an error talking to server or any other error comes in error property in the smae response variable.
                 },
             error:
                 function (response) {
@@ -100,13 +127,14 @@
 
     let series = JSON.parse(localStorage.getItem("Data"));
     debugger;
+    //options object is the object that we pass in the pi graph api.
     var options = {
         series: series,
         chart: {
             width: 380,
             type: 'pie',
         },
-        labels: ["SportyLoung","ProfessionaSwimWear","Boho", "Sporty"],
+        labels: ["SportyLoung", "ProfessionaSwimWear", "Boho", "Sporty"],
         responsive: [{
             breakpoint: 480,
             options: {
@@ -119,6 +147,8 @@
             }
         }]
     };
+
+    //selecting here the divd element with chart id nad rendering the chart in that element.
 
     var chart = new ApexCharts(document.querySelector("#chart"), options);
     chart.render();

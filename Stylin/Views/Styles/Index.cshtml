@@ -6,9 +6,6 @@
 }
 
 
-
-
-
 <style>
     #main-container {
         margin: 0;
@@ -28,6 +25,8 @@
         display: none;
     }
 </style>
+
+<p id="YourPackage" style="display:none">Here is your reccomended Style Package based off of your style interests</p>
 
 <div class="container text-center align-middle hide" id="success">
     <div class="card border-success mb-3" style="max-width: 18rem;">
@@ -49,7 +48,7 @@
 
 </div>
 
-<div class="container text-center align-middle" id="main-container">
+<div class="container text-center align-middle border border-primary" id="main-container">
     <div class="questions-container">
         <div id="question1" class="question show">
             <p>Are you active on a daily basis?</p>
@@ -113,10 +112,10 @@
 
     <div class="buttons">
         <button id="previous" class="hide">Previous</button>
-        <button id="next">Next</button>
+        <button class="btn btn-primary btn-sm m-2" id="next">Next</button>
     </div>
     <div>
-        <button id="submit" style="display:none">Submit Answers</button>
+        <button class="btn btn-danger btn-sm m-2" id="submit" style="display:none">Submit Answers</button>
     </div>
     <span class="text-danger" id="error" style="display: none;">
         This is the last question.
@@ -134,7 +133,7 @@
 
 
         currentQuestion = document.querySelector(".show");
-
+        //checikin here if the checked chckbox has specifi id, if its, that specifid style name is being added to answers array.
         if (currentQuestion.id === "question1") {
             if (document.querySelector("#sporty").checked) {
                 answers.push("sporty");
@@ -169,6 +168,7 @@
             if (document.querySelector("#lounge-wear").checked) {
                 answers.push("lounge-wear");
             }
+            //if questoin is the last quesiton, we showing an error just to stop User to go furhter becasue there is nothing futher.
             document.querySelector("#error").style.display = "block";
             document.querySelector("#submit").style.display = "block";
             console.log(answers);
@@ -186,6 +186,8 @@
 
 
     });
+
+    //When clicking on Submit button, we want to send the selected answers to Server on Styles/Answwers url for data to be saved for the user.
 
     const submit = document.querySelector("#submit");
     submit.addEventListener('click', function (e) {
@@ -212,20 +214,26 @@
                 success:
                     function (response) {
                         // Generate HTML table.()   
+                        //In the response, we are getting a singel object from the server gettting its properties to be shown in the doument.
                        //Get the element with the ID of subscriberName, put the first name of the subscriber in html
                         document.querySelector("#subscriberName").innerHTML = response.firstName;
                         //Get the element with the ID pf styleName
                         document.querySelector("#styleName").innerHTML = response.styleName;
-                        //get dd id
+                        //Get the element with the ID pf ArrivalDate
                         document.querySelector("#arrivalDate").innerHTML = response.deliveryDate;
-                        //
+                        //packagePrice
                         document.querySelector("#packagePrice").innerHTML = response.packagePrice;
-                        //
+                        //deliveryFreq
                         document.querySelector("#deliveryFreq").innerHTML = response.deliveryFreq;
                         //response = JSON.stringify(response);
+                        //adding new class 'show' to sucess element because w wnat show data after we get resonse. show class displays any elemnt.
                         document.querySelector("#success").classList.add('show');
+                        //Removing hide class as hide class disappears any element in the document.
                         document.querySelector("#success").classList.remove('hide');
+                        //hiding main-container to hide questoinarie to show result of questionaire only.
                         document.querySelector("#main-container").classList.add('hide');
+                        //Shoing the paragraph before card on the result that was first hidden.
+                        document.querySelector("#YourPackage").style.display = "block";
                     },
                 error:
                     function (response) {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -102,6 +103,7 @@ namespace Stylin.Controllers
             {
                 try
                 {
+                    
                     _context.Update(employee);
                     await _context.SaveChangesAsync();
                 }
@@ -161,6 +163,31 @@ namespace Stylin.Controllers
         {
 
 
+            return View();
+        }
+
+        public IActionResult TextSubscriber()
+        {
+           
+            //Send Message instance to send text messages
+            UtilityClasses.SendMessage sendMessage = new UtilityClasses.SendMessage();
+
+            //Get the list of all the subscribers who have ordered their Style Package
+            List<Subscriber> subscribers = _context.Subscriber.Where(s => s.PackageOrdered == 1).ToList();  
+            
+            //Loop through every subscrier in the list and send him/her a personalized text message regarding their package
+            for(int i=0; i < subscribers.Count; i++)
+            {
+                //Sending personalized text message here
+                sendMessage.SendText(subscribers[i].PhoneNumber, subscribers[i].FullName + ", Your subsription pacakge is out for deliery. With the delivdry date: " + subscribers[i].DeliveryDate + "and the package is" + subscribers[i].StyleName);
+
+            }
+
+
+            return View();
+        }
+        public IActionResult EmployeeMessage()
+        {
             return View();
         }
     }
