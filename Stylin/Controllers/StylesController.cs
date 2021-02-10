@@ -31,10 +31,7 @@ namespace Stylin.Controllers
         }
 
         //Get Survey Answers from client here
-
-
         [HttpPost]
-
         //[FromBody] attribute is an update in .NET Core to get JSON Data from client
         public  Subscriber Answers([FromBody] Answer answer)
         {
@@ -42,7 +39,7 @@ namespace Stylin.Controllers
             DateTime today = DateTime.Now;
             //instantiate a deliveryDate variable
             DateTime deliveryDate = new DateTime();
-            //set deliverydate to two days after 'today's value
+            //set deliverydate to two days after 'today's variables value
             deliveryDate = today.AddDays(2);
             //Convert DeliveryDate to specified format
             string DeliveryDate = today.ToString("YYYY-MM-dd");

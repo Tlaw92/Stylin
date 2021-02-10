@@ -59,14 +59,14 @@ namespace Stylin.UtilityClasses
         }
         public void SendText(string PhoneNumber, string TextBody)
         {
-           //APIKeys class obstantiated
+           //APIKeys class instantiated
            
             APIKeys aPIKeys = new APIKeys();
             //Twilio library
             //Twilio.TwilioClient is the packge in .net which is responsbile for talking to all the twilio apis.
             Twilio.TwilioClient.SetUsername("TLaw92");
-            //TwilioClient.Init() is the function which actually kicks start your twilioclient library to call differnt mehtods in that.
 
+            //TwilioClient.Init() is the function which actually kicks start your twilioclient library to call differnt mehtods in that.
             TwilioClient.Init(APIKeys.TWILIO_API_SID, APIKeys.TWILIO_API_AUTH);
 
             //mesage resouurce is class in TwilioClient is to send and receieve messages to and from your application

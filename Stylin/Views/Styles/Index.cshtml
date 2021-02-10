@@ -127,13 +127,14 @@
     //Pushing all the values in array
 
     const nextButton = document.querySelector("#next");
+    //Create an empty array to add question answers to
     let answers = [];
     nextButton.addEventListener('click', function (e) {
 
 
 
         currentQuestion = document.querySelector(".show");
-        //checikin here if the checked chckbox has specifi id, if its, that specifid style name is being added to answers array.
+        //checikin here if the checked chckbox has specific id, if its, that specific id style name is being added to answers array.
         if (currentQuestion.id === "question1") {
             if (document.querySelector("#sporty").checked) {
                 answers.push("sporty");
@@ -168,7 +169,7 @@
             if (document.querySelector("#lounge-wear").checked) {
                 answers.push("lounge-wear");
             }
-            //if questoin is the last quesiton, we showing an error just to stop User to go furhter becasue there is nothing futher.
+            //if questoin is the last quesiton, show an error just to stop User to go furhter becasue there is nothing futher.
             document.querySelector("#error").style.display = "block";
             document.querySelector("#submit").style.display = "block";
             console.log(answers);
@@ -188,7 +189,6 @@
     });
 
     //When clicking on Submit button, we want to send the selected answers to Server on Styles/Answwers url for data to be saved for the user.
-
     const submit = document.querySelector("#submit");
     submit.addEventListener('click', function (e) {
         //var jsonArray = JSON.parse(JSON.stringify(answers));

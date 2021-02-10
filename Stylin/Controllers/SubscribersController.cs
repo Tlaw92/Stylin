@@ -97,10 +97,7 @@ namespace Stylin.Controllers
                 //place line sof code below anywhereyou want a text to be sent to Subscriber
                 //Sending message to subscriber
                 SendMessage sendMessage = new SendMessage();
-                //string MessageBody = "Hey" + subscriber.FullName + ", Thank you for creating profile. From Stylin".
-           //   //  //sendMessage.SendText("+18053193640", "Hey, " + subscriber.FullName + ", Thank you for creating profile. Regards, Stylin.");
-                //
-                //
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", subscriber.IdentityUserId);

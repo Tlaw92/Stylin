@@ -23,7 +23,7 @@ namespace Stylin.Controllers
         //[FromBody] attribute is an update in .NET Core to get JSON Data from client
         public ActionResult Answers([FromBody] Answer answer)
         {
-            //1. Who is logged in
+
 
             Subscriber subscriber = new Subscriber();
 
